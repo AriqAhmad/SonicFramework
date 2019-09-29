@@ -7,8 +7,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.ColorRes
+import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProviders
 import com.thedevelopercat.sonic.ui.activities.SonicActivity
 import com.thedevelopercat.sonic.helper.SonicLogger
 import com.thedevelopercat.sonic.viewModels.SonicViewModel
@@ -17,13 +19,20 @@ abstract class SonicFragment<Binding: ViewDataBinding, ViewModel: SonicViewModel
 
     protected lateinit var sonicActivity: SonicActivity<*,*>
     protected lateinit var root: View
+    protected var viewModel: ViewModel? = null
+    protected var binding: Binding? = null
+
     abstract fun getLayout(): Int
+    protected abstract fun getViewModelClass(): Class<ViewModel>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         sonicActivity = activity as SonicActivity<*,*>
+        binding = DataBindingUtil.inflate(inflater, getLayout(),container,false)//DataBindingUtil.setContentView(this, getLayout())
+        binding?.lifecycleOwner = this
+        viewModel = ViewModelProviders.of(this).get(getViewModelClass())
         root = inflater.inflate(getLayout(), null)
         return root
     }
