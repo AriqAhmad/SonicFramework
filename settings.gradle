@@ -1,0 +1,2 @@
+include ':app', ':sonic'
+rootProject.name='Sonic Framework'

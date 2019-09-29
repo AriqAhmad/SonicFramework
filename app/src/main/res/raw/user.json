@@ -1,0 +1,7 @@
+{
+  "message": "User details fetched successfully",
+  "data": {
+    "name": "Ariq Ahmad",
+    "age": 21
+  }
+}

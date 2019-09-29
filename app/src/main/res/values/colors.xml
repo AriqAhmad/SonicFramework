@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#EB5428</color>
+    <color name="colorPrimaryVariant">#000000</color>
+    <color name="statusBarColor">@color/colorPrimaryVariant</color>
+    <color name="colorOnPrimary">#FFFFFF</color>
+    <color name="colorSecondary">#333333</color>
+    <color name="colorSecondaryVariant">#0039CB</color>
+    <color name="colorOnSecondary">#FFFFFF</color>
+    <color name="colorError">#F44336</color>
+    <color name="colorOnError">#FFFFFF</color>
+    <color name="colorSurface">#FFFFFF</color>
+    <color name="colorOnSurface">#212121</color>
+    <color name="colorBackground">#FAFAFA</color>
+    <color name="colorOnBackground">#212121</color>
+</resources>

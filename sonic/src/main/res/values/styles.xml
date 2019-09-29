@@ -1,0 +1,141 @@
+<resources
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <style name="SonicTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+
+        <!-- Global color attributes -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryVariant">@color/colorPrimaryVariant</item>
+        <item name="android:statusBarColor">@color/statusBarColor</item>
+        <item name="colorOnPrimary">@color/colorOnPrimary</item>
+        <item name="colorSecondary">@color/colorSecondary</item>
+        <item name="colorSecondaryVariant">@color/colorSecondaryVariant</item>
+        <item name="colorOnSecondary">@color/colorOnSecondary</item>
+        <item name="colorError">@color/colorError</item>
+        <item name="colorOnError">@color/colorOnError</item>
+        <item name="colorSurface">@color/colorSurface</item>
+        <item name="colorOnSurface">@color/colorOnSurface</item>
+        <item name="android:colorBackground">@color/colorBackground</item>
+        <item name="colorOnBackground">@color/colorOnBackground</item>
+
+        <!-- Global type attributes -->
+        <item name="textAppearanceButton">@style/SonicTextAppearance.Button</item>
+        <item name="fontFamily">@font/roboto_regular</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+
+        <!-- Global shape attributes -->
+        <item name="shapeAppearanceSmallComponent">@style/SonicShapeAppearance.SmallComponent</item>
+        <item name="shapeAppearanceMediumComponent">@style/SonicShapeAppearance.MediumComponent</item>
+        <item name="shapeAppearanceLargeComponent">@style/SonicShapeAppearance.LargeComponent</item>
+
+        <!-- Chip widget style attribute -->
+        <item name="chipStyle">@style/SonicChip</item>
+        <item name="chipStandaloneStyle">@style/SonicChip.Standalone</item>
+
+        <!-- Button widget style attribute -->
+        <item name="materialButtonStyle">@style/SonicButton</item>
+
+        <!-- Text Field widget style attribute -->
+        <item name="textInputStyle">@style/SonicTextField</item>
+
+        <!-- Card widget style attribute -->
+        <item name="materialCardViewStyle">@style/SonicCard</item>
+
+        <!-- Bottom Navigation widget style attribute -->
+        <item name="bottomNavigationStyle">@style/SonicBottomNavigation</item>
+
+        <!-- Toolbar style attributes -->
+        <item name="toolbarStyle">@style/Widget.MaterialComponents.Toolbar</item>
+        <item name="actionOverflowButtonStyle">@style/SonicOverFlowMenuIconStyle</item>
+        <item name="actionMenuTextAppearance">@style/SonicTextAppearance.OverFlowMenu</item>
+        <item name="actionMenuTextColor">@color/colorError</item>
+        <item name="android:actionMenuTextColor">@color/colorError</item>
+    </style>
+
+    <style name="SonicOverFlowMenuIconStyle" parent="Widget.AppCompat.ActionButton.Overflow">
+        <item name="android:tint">@color/colorError</item>
+    </style>
+
+    <style name="SonicOverFlowMenuStyle" parent="ThemeOverlay.MaterialComponents.Light">
+        <item name="android:windowBackground">@color/colorError</item>
+        <item name="android:colorForegroundInverse">@color/colorError</item>
+        <item name="android:colorBackground">@color/colorError</item>
+        <item name="android:colorBackgroundCacheHint">@color/colorError</item>
+        <item name="colorBackgroundFloating">@color/colorError</item>
+
+        <item name="android:textColorPrimary">@color/colorSecondary</item>
+        <item name="android:textColorSecondary">@color/colorSecondary</item>
+        <item name="android:textColorTertiary">@color/colorSecondary</item>
+        <item name="android:textColorPrimaryDisableOnly">@color/colorSecondary</item>
+        <item name="android:textColorHint">@color/colorSecondary</item>
+
+        <item name="android:background">@color/colorError</item>
+    </style>
+
+    <style name="SonicTextAppearance.OverFlowMenu" parent="TextAppearance.AppCompat.Menu">
+        <item name="android:textStyle">normal</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textAllCaps">true</item>
+    </style>
+
+    <style name="SonicTextAppearance.Chip" parent="TextAppearance.MaterialComponents.Chip">
+        <item name="android:fontFamily">@font/roboto_regular</item>
+    </style>
+
+    <style name="SonicTextAppearance.Button" parent="TextAppearance.MaterialComponents.Button">
+        <item name="android:textAllCaps">false</item>
+    </style>
+
+    <style name="SonicShapeAppearance.SmallComponent" parent="ShapeAppearance.MaterialComponents.SmallComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">8dp</item>
+    </style>
+
+    <style name="SonicShapeAppearance.MediumComponent" parent="ShapeAppearance.MaterialComponents.MediumComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">8dp</item>
+    </style>
+
+    <style name="SonicShapeAppearance.LargeComponent" parent="ShapeAppearance.MaterialComponents.LargeComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">8dp</item>
+    </style>
+
+    <!-- NOTE: Chips don't seem to pick up on the theme fontFamily attributes, so these styles are necessary -->
+    <style name="SonicChip" parent="Widget.MaterialComponents.Chip.Action">
+        <item name="android:textAppearance">@style/SonicTextAppearance.Chip</item>
+    </style>
+
+    <style name="SonicChip.Standalone" parent="Widget.MaterialComponents.Chip.Entry">
+        <item name="android:textAppearance">@style/SonicTextAppearance.Chip</item>
+    </style>
+
+    <style name="SonicButton" parent="Widget.MaterialComponents.Button">
+        <item name="backgroundTint">@color/colorPrimary</item>
+    </style>
+
+    <style name="SonicTextField" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">
+        <item name="boxBackgroundColor">@color/text_field_background</item>
+    </style>
+
+    <style name="SonicCard" parent="Widget.MaterialComponents.CardView">
+        <item name="cardElevation">8dp</item>
+    </style>
+
+    <style name="SonicBottomNavigation" parent="Widget.MaterialComponents.BottomNavigationView.Colored" />
+
+    <style name="SonicAppbarTextAppearance" parent="@android:style/TextAppearance.Medium"/>
+
+    <style name="SonicAppbarTextAppearance.Expanded">
+        <item name="android:textSize">28sp</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="SonicAppbarTextAppearance.Collapsed">
+        <item name="android:textSize">24sp</item>
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+</resources>
