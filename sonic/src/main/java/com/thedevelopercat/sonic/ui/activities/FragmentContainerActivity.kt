@@ -7,6 +7,7 @@ import androidx.annotation.ColorRes
 import androidx.annotation.StringRes
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
+import androidx.databinding.ViewDataBinding
 import com.thedevelopercat.sonic.R
 import com.thedevelopercat.sonic.databinding.ActivityFragmentContainerBinding
 import com.thedevelopercat.sonic.ui.fragments.SonicFragment
@@ -15,8 +16,8 @@ import kotlinx.android.synthetic.main.activity_fragment_container.*
 
 internal const val FRAGMENT_TYPE = "FRAGMENT_TYPE"
 
-abstract class FragmentContainerActivity<ViewModel : SonicViewModel> :
-    SonicActivity<ActivityFragmentContainerBinding, ViewModel>() {
+abstract class FragmentContainerActivity :
+    SonicActivity<ActivityFragmentContainerBinding, SonicViewModel>() {
 
     protected var type: Int? = null
     internal var isToolbarTransparent = false
@@ -36,6 +37,10 @@ abstract class FragmentContainerActivity<ViewModel : SonicViewModel> :
 
     override fun getLayout(): Int {
         return R.layout.activity_fragment_container
+    }
+
+    override fun getViewModelClass(): Class<SonicViewModel> {
+        return SonicViewModel::class.java
     }
 
     open fun matchLayoutToParents() {
@@ -65,7 +70,7 @@ abstract class FragmentContainerActivity<ViewModel : SonicViewModel> :
     }
 
     abstract fun shouldAddToBackStack(): Boolean
-    abstract fun getFragmentInstance(type: Int?): SonicFragment<*, ViewModel>
+    abstract fun getFragmentInstance(type: Int?): SonicFragment<*,*>
     @StringRes
     abstract fun getToolbarTitle(type: Int?): Int
 }

@@ -45,11 +45,14 @@
         <item name="bottomNavigationStyle">@style/SonicBottomNavigation</item>
 
         <!-- Toolbar style attributes -->
-        <item name="toolbarStyle">@style/Widget.MaterialComponents.Toolbar</item>
+        <item name="toolbarStyle">@style/SonicToolbarStyle</item>
         <item name="actionOverflowButtonStyle">@style/SonicOverFlowMenuIconStyle</item>
         <item name="actionMenuTextAppearance">@style/SonicTextAppearance.OverFlowMenu</item>
         <item name="actionMenuTextColor">@color/colorError</item>
         <item name="android:actionMenuTextColor">@color/colorError</item>
+    </style>
+
+    <style name="SonicToolbarStyle" parent="@style/Widget.MaterialComponents.Toolbar">
     </style>
 
     <style name="SonicOverFlowMenuIconStyle" parent="Widget.AppCompat.ActionButton.Overflow">

@@ -8,6 +8,7 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
 import android.view.KeyEvent
+import android.view.MenuItem
 import android.view.View
 import android.view.View.OnClickListener
 import android.view.inputmethod.InputMethodManager
@@ -58,9 +59,20 @@ abstract class SonicActivity<Binding: ViewDataBinding, ViewModel : SonicViewMode
         initViews()
     }
 
-    override fun onBackPressed() {
+
+    open fun onNavPressed(){
         hideKeyBoard()
-        super.onBackPressed()
+        onBackPressed()
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> {
+                onNavPressed()
+                return true
+            }
+        }
+        return false
     }
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
