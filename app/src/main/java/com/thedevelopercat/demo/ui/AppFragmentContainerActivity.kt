@@ -15,9 +15,13 @@ class AppFragmentContainerActivity : FragmentContainerActivity() {
         return MainFragment.newInstance()
     }
 
+    override fun getToolbarTitleColor(): Int {
+        return R.color.black
+    }
+
     override fun getToolbarTitle(type: Int?): Int {
         return when (type) {
-            else -> R.string.empty
+            else -> R.string.app_name
         }
     }
 
@@ -25,6 +29,12 @@ class AppFragmentContainerActivity : FragmentContainerActivity() {
         return when (type) {
             else -> false
         }
+    }
+
+    override fun initViews() {
+        super.initViews()
+        setToolbarAsTransparent(R.color.white)
+        matchLayoutToParents()
     }
 }
 

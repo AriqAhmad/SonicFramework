@@ -32,7 +32,7 @@ abstract class SonicActivity<Binding: ViewDataBinding, ViewModel : SonicViewMode
     protected var viewModel: ViewModel? = null
     protected var binding: Binding? = null
 
-    private var toolbar: Toolbar? = null
+    protected var toolbar: Toolbar? = null
     private var appBarLayout: AppBarLayout? = null
 
     @ColorRes

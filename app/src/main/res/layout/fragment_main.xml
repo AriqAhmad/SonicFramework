@@ -13,6 +13,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/colorError"
         tools:context="com.thedevelopercat.demo.ui.MainActivity">
 
         <com.thedevelopercat.sonic.ui.widgets.SonicTextView

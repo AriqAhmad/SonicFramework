@@ -7,7 +7,6 @@
     android:id="@+id/app_bar_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:theme="@style/SonicToolbarStyle"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     android:background="@android:color/transparent"
@@ -17,7 +16,9 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
+        app:titleTextAppearance="@style/SonicAppbarTextAppearance"
+        app:subtitleTextAppearance="@style/SonicAppbarTextAppearance"
         tools:navigationIcon="@drawable/ic_arrow_back"
         tools:title="@tools:sample/lorem"
-        tools:subtitle="@tools:sample/lorem"/>
+        tools:titleTextColor="@color/white"/>
 </com.google.android.material.appbar.AppBarLayout>
