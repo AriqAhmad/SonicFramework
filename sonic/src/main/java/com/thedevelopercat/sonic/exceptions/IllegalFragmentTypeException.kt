@@ -2,7 +2,7 @@ package com.thedevelopercat.sonic.exceptions
 
 class IllegalFragmentTypeException : SonicException {
 
-    internal constructor() : super("Invalid fragment type") {}
+    constructor() : super("Invalid fragment type") {}
 
-    internal constructor(message: String) : super(message) {}
+    public constructor(message: String) : super(message) {}
 }
