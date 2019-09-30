@@ -4,6 +4,7 @@ import android.animation.AnimatorInflater
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.graphics.PorterDuff
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
@@ -173,10 +174,8 @@ abstract class SonicActivity<Binding: ViewDataBinding, ViewModel : SonicViewMode
     }
 
     open fun setToolBarIconColor(@ColorRes color: Int) {
-        val actionBar = supportActionBar
-        actionBar?.setBackgroundDrawable(
-            ColorDrawable(resources.getColor(color))
-        )
+        val navIcon = toolbar?.navigationIcon
+        navIcon?.setColorFilter(ContextCompat.getColor(this, color), PorterDuff.Mode.SRC_ATOP)
     }
 
     open fun getToolbarIcon(): Int {
