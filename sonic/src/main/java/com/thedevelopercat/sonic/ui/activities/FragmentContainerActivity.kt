@@ -7,27 +7,31 @@ import androidx.annotation.ColorRes
 import androidx.annotation.StringRes
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
-import androidx.databinding.ViewDataBinding
 import com.thedevelopercat.sonic.R
+import com.thedevelopercat.sonic.databinding.ActivityFragmentContainerBinding
 import com.thedevelopercat.sonic.ui.fragments.SonicFragment
 import com.thedevelopercat.sonic.viewModels.SonicViewModel
 import kotlinx.android.synthetic.main.activity_fragment_container.*
 
-const val FRAGMENT_TYPE = "FRAGMENT_TYPE"
+internal const val FRAGMENT_TYPE = "FRAGMENT_TYPE"
 
-abstract class FragmentContainerActivity<Binding: ViewDataBinding, ViewModel : SonicViewModel> :
-    SonicActivity<Binding, ViewModel>() {
+abstract class FragmentContainerActivity<ViewModel : SonicViewModel> :
+    SonicActivity<ActivityFragmentContainerBinding, ViewModel>() {
 
     protected var type: Int? = null
     internal var isToolbarTransparent = false
 
     override fun getToolbarColor(): Int {
-        return if(isToolbarTransparent) R.color.transparent else R.color.colorPrimary
+        return if (isToolbarTransparent) R.color.transparent else R.color.colorPrimary
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        type = intent?.extras?.getInt(FRAGMENT_TYPE)
+        super.onCreate(savedInstanceState)
     }
 
     override fun initViews() {
         setFragment()
-        type = intent?.extras?.getInt(FRAGMENT_TYPE)
     }
 
     override fun getLayout(): Int {
@@ -61,38 +65,11 @@ abstract class FragmentContainerActivity<Binding: ViewDataBinding, ViewModel : S
     }
 
     abstract fun shouldAddToBackStack(): Boolean
-    abstract fun getFragmentInstance(type: Int?): SonicFragment<Binding, ViewModel>
-    @StringRes abstract fun getToolbarTitle(type: Int?): Int
+    abstract fun getFragmentInstance(type: Int?): SonicFragment<*, ViewModel>
+    @StringRes
+    abstract fun getToolbarTitle(type: Int?): Int
 }
 
 fun Intent.setFragmentType(type: Int) {
     this.putExtra(FRAGMENT_TYPE, type)
-}
-
-fun SonicFragment<*,*>.startFragmentActivity(
-    type: Int,
-    bundle: Bundle = Bundle(),
-    clearTop: Boolean = false
-) {
-    val intent = Intent(activity, FragmentContainerActivity::class.java)
-    intent.putExtras(bundle)
-    intent.setFragmentType(type)
-    if (clearTop){
-        Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-    }
-    startActivity(intent)
-}
-
-fun SonicActivity<*,*>.startFragmentActivity(
-    type: Int,
-    bundle: Bundle = Bundle(),
-    clearTop: Boolean = false
-) {
-    val intent = Intent(this, FragmentContainerActivity::class.java)
-    intent.putExtras(bundle)
-    intent.setFragmentType(type)
-    if (clearTop){
-        Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-    }
-    startActivity(intent)
 }
