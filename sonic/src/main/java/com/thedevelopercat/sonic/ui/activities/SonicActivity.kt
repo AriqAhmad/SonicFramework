@@ -227,7 +227,7 @@ abstract class SonicActivity<Binding: ViewDataBinding, ViewModel : SonicViewMode
         setToolBarElevation(0.1f)
         toolBarColor = R.color.transparent
         setToolBarIconColor(color)
-        supportActionBar?.setBackgroundDrawable(ColorDrawable(resources.getColor(color)))
+        supportActionBar?.setBackgroundDrawable(ColorDrawable(resources.getColor(toolBarColor)))
         supportActionBar?.setDisplayHomeAsUpEnabled(!hideIcon)
         supportActionBar?.setHomeButtonEnabled(!hideIcon)
     }
