@@ -43,11 +43,19 @@ abstract class SonicRepository {
             result.value = data
             return
         }
+        response?.errorBody()
 //        val status = response?.code() ?: 404
 //        val res = SonicResponse()
 //        res.status = status
 //        res.error = ParseException()
 //        result.value = res as? T
+        try{
+            val clazz: T? = result.value
+            result.value = Gson().fromJson(response?.errorBody().toString(), clazz!!::class.java)
+        }
+        catch (e: JsonSyntaxException){
+            e.printStackTrace()
+        }
         onRequestFailed(requestType, result)
     }
 
