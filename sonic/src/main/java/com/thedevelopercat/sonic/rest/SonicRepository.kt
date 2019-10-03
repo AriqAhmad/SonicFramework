@@ -6,7 +6,6 @@ import androidx.lifecycle.MutableLiveData
 import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException
 import com.thedevelopercat.sonic.exceptions.NoNetworkException
-import com.thedevelopercat.sonic.exceptions.ParseException
 import com.thedevelopercat.sonic.utils.NetworkUtils
 import retrofit2.Call
 import retrofit2.Callback
@@ -43,23 +42,14 @@ abstract class SonicRepository {
             result.value = data
             return
         }
-        response?.errorBody()
-//        val status = response?.code() ?: 404
-//        val res = SonicResponse()
-//        res.status = status
-//        res.error = ParseException()
-//        result.value = res as? T
-        try{
-            val clazz: T? = result.value
-            result.value = Gson().fromJson(response?.errorBody().toString(), clazz!!::class.java)
-        }
-        catch (e: JsonSyntaxException){
-            e.printStackTrace()
-        }
-        onRequestFailed(requestType, result)
+        onRequestFailed(requestType, result, response?.errorBody().toString())
     }
 
-    open fun <T : SonicResponse> onRequestFailed(requestType: Int, result: MutableLiveData<T>) {
+    open fun <T : SonicResponse> onRequestFailed(
+        requestType: Int,
+        result: MutableLiveData<T>,
+        errorBody: String?
+    ) {
 
     }
 
@@ -70,10 +60,11 @@ abstract class SonicRepository {
         if (!NetworkUtils.isNetworkConnected()) {
             status = 408
             response.error = NoNetworkException()
+            response.errorMessage = response.error?.toString()
         }
         response.status = status
 
-        onRequestFailed(requestType, result)
+        onRequestFailed(requestType, result, response.toString())
     }
 
     fun <T : SonicResponse> parseLocalJson(@RawRes id: Int, type: Class<T>): T? {
