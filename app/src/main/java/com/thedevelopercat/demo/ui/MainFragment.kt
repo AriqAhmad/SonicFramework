@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.lifecycle.Observer
 import com.thedevelopercat.demo.R
 import com.thedevelopercat.demo.databinding.FragmentMainBinding
+import com.thedevelopercat.demo.models.user.response.UserDetailsResponse
 import com.thedevelopercat.demo.viewHolders.MainViewModel
 import com.thedevelopercat.sonic.ui.fragments.SonicFragment
 import kotlinx.android.synthetic.main.activity_main.*
@@ -30,7 +31,8 @@ class MainFragment: SonicFragment<FragmentMainBinding, MainViewModel>() {
     override fun initViews() {
         binding?.viewModel = viewModel
         viewModel?.getUserDetails()?.observe(this, Observer {
-            text.text = it.data?.name
+            val response = (it as? UserDetailsResponse)
+            text.text = response?.data?.name
         })
     }
 

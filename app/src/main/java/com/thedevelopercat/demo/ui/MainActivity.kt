@@ -4,6 +4,7 @@ import androidx.lifecycle.Observer
 import com.thedevelopercat.demo.R
 import com.thedevelopercat.demo._sonic_.ui.AppBaseActivity
 import com.thedevelopercat.demo.databinding.ActivityMainBinding
+import com.thedevelopercat.demo.models.user.response.UserDetailsResponse
 import com.thedevelopercat.demo.viewHolders.MainViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -21,7 +22,8 @@ class MainActivity : AppBaseActivity<ActivityMainBinding, MainViewModel>() {
     override fun initViews() {
         binding?.viewModel = viewModel
         viewModel?.getUserDetails()?.observe(this, Observer {
-            text.text = it.data?.name
+            val resposne = it as? UserDetailsResponse
+            text.text = resposne?.data?.name
         })
         startFragmentActivity(0)
     }

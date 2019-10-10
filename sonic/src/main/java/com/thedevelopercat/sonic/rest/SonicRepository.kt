@@ -16,12 +16,14 @@ import java.io.IOException
 import java.io.InputStream
 
 
-abstract class BaseRepository {
+abstract class SonicRepository<Service> {
 
-    fun <T : SonicResponse> makeRequest(call: Call<T>, requestType: Int): LiveData<SonicResponse> {
+    protected var service: Service? = null
+
+    fun <T : SonicResponse> makeRequest(call: Call<T>?, requestType: Int): LiveData<SonicResponse> {
         val result = MutableLiveData<SonicResponse>()
         if (NetworkUtils.isNetworkConnected()) {
-            call.enqueue(object : Callback<T> {
+            call?.enqueue(object : Callback<T> {
                 override fun onResponse(call: Call<T>?, response: Response<T>?) {
                     handleResponse(response, requestType, result)
                 }
