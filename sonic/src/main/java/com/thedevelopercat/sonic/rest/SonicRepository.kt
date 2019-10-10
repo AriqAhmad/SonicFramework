@@ -72,7 +72,7 @@ abstract class SonicRepository<Service> {
         val res = SonicResponse()
         res.errorMessage = errorMessage
         res.status = status
-
+        result.value = res
         onInvalidRequest(requestType, res, result)
     }
 
