@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException
+import com.thedevelopercat.sonic.exceptions.InvalidRequestException
 import com.thedevelopercat.sonic.exceptions.NoNetworkException
 import com.thedevelopercat.sonic.utils.NetworkUtils
 import org.json.JSONException
@@ -38,7 +39,7 @@ abstract class SonicRepository<Service> {
                     if (response?.isSuccessful == true) {
                         handleResponse(response, requestType, result)
                     } else {
-                        handleRequestFail(response, requestType, result)
+                        handleRequestInvalid(response, requestType, result)
                     }
                 }
 
@@ -52,7 +53,7 @@ abstract class SonicRepository<Service> {
         return transformResponse(requestType, result)
     }
 
-    private fun <T : SonicResponse> handleRequestFail(
+    private fun <T : SonicResponse> handleRequestInvalid(
         response: Response<T>?,
         requestType: Int,
         result: MutableLiveData<SonicResponse>
@@ -70,6 +71,7 @@ abstract class SonicRepository<Service> {
         }
         val status = response?.code() ?: 404
         val res = SonicResponse()
+        res.error = if(errorMessage.isEmpty()) InvalidRequestException() else InvalidRequestException(errorMessage)
         res.errorMessage = errorMessage
         res.status = status
         result.value = res
@@ -85,7 +87,7 @@ abstract class SonicRepository<Service> {
             result.value = data
             return
         }
-        handleRequestFail(response, requestType, result)
+        handleRequestInvalid(response, requestType, result)
     }
 
     fun handleFailure(t: Throwable?, requestType: Int, result: MutableLiveData<SonicResponse>) {
