@@ -2,6 +2,7 @@ package com.thedevelopercat.demo
 
 import com.thedevelopercat.demo.api.EndPoints
 import com.thedevelopercat.sonic.base.SonicApplication
+import com.thedevelopercat.sonic.utils.PreferencesUtils
 
 class AppBaseApplication: SonicApplication() {
 
