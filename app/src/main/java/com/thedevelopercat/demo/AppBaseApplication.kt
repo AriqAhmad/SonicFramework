@@ -3,7 +3,7 @@ package com.thedevelopercat.demo
 import com.thedevelopercat.demo.api.EndPoints
 import com.thedevelopercat.sonic.base.SonicApplication
 
-class AppBaseApplication : SonicApplication() {
+class AppBaseApplication: SonicApplication() {
 
     override fun onCreate() {
         super.onCreate()

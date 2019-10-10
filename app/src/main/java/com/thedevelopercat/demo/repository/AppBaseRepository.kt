@@ -15,7 +15,6 @@ abstract class AppBaseRepository<Service> : SonicRepository<Service>(){
 
     override fun onInvalidRequest(
         requestType: Int,
-        res: SonicResponse,
         result: MutableLiveData<SonicResponse>) {
 
     }

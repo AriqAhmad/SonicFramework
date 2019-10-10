@@ -26,7 +26,6 @@ abstract class SonicRepository<Service> {
     abstract fun onFailure(t: Throwable?, requestType: Int)
     abstract fun onInvalidRequest(
         requestType: Int,
-        res: SonicResponse,
         result: MutableLiveData<SonicResponse>
     )
     abstract fun getErrorResponseKeys(): Array<String>
@@ -75,7 +74,7 @@ abstract class SonicRepository<Service> {
         res.errorMessage = errorMessage
         res.status = status
         result.value = res
-        onInvalidRequest(requestType, res, result)
+        onInvalidRequest(requestType, result)
     }
 
     fun <T : SonicResponse> handleResponse(
