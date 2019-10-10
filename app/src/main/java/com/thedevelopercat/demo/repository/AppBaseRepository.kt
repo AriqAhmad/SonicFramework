@@ -13,8 +13,6 @@ abstract class AppBaseRepository<Service> : SonicRepository<Service>(){
         service = ApiClient.client.create(getServiceClass())
     }
 
-    abstract fun getServiceClass(): Class<Service>;
-
     override fun onInvalidResponse(
         requestType: Int,
         res: SonicResponse,

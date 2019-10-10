@@ -19,6 +19,9 @@ import java.io.InputStream
 abstract class SonicRepository<Service> {
 
     protected var service: Service? = null
+    abstract fun getServiceClass(): Class<Service>
+    abstract fun onFailure(t: Throwable?, requestType: Int)
+    abstract fun onInvalidResponse(requestType: Int, res: SonicResponse, result: MutableLiveData<SonicResponse>)
 
     fun <T : SonicResponse> makeRequest(call: Call<T>?, requestType: Int): LiveData<SonicResponse> {
         val result = MutableLiveData<SonicResponse>()
@@ -52,8 +55,6 @@ abstract class SonicRepository<Service> {
         onInvalidResponse(requestType, res, result)
     }
 
-    protected abstract fun onInvalidResponse(requestType: Int, res: SonicResponse, result: MutableLiveData<SonicResponse>)
-
     fun handleFailure(t: Throwable?, requestType: Int, result: MutableLiveData<SonicResponse>) {
         var status = -1
         if (!NetworkUtils.isNetworkConnected()) {
@@ -66,8 +67,6 @@ abstract class SonicRepository<Service> {
 
         onFailure(t, requestType)
     }
-
-    abstract fun onFailure(t: Throwable?, requestType: Int)
 
     protected open fun transform(requestType: Int, response: SonicResponse?): SonicResponse? {
         return response
