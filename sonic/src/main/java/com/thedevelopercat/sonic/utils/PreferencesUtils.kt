@@ -93,7 +93,7 @@ class PreferencesUtils {
     }
 
     @Synchronized
-    public fun PreferencesUtils.deleteAllData() {
+    public fun deleteAllData() {
         editor?.clear()
         editor?.commit()
     }
