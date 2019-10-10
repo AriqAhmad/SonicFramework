@@ -13,7 +13,7 @@ abstract class AppBaseRepository<Service> : SonicRepository<Service>(){
         service = ApiClient.client.create(getServiceClass())
     }
 
-    override fun onInvalidResponse(
+    override fun onInvalidRequest(
         requestType: Int,
         res: SonicResponse,
         result: MutableLiveData<SonicResponse>) {
@@ -25,6 +25,10 @@ abstract class AppBaseRepository<Service> : SonicRepository<Service>(){
 
     override fun getApplication(): Application {
         return AppBaseApplication.instance
+    }
+
+    override fun getErrorResponseKeys(): Array<String> {
+        return arrayOf("msg", "message", "error", "errorMessage", "error_message", "errormessage")
     }
 
 }

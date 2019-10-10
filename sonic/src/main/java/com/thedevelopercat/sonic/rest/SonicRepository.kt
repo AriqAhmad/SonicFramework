@@ -9,6 +9,8 @@ import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException
 import com.thedevelopercat.sonic.exceptions.NoNetworkException
 import com.thedevelopercat.sonic.utils.NetworkUtils
+import org.json.JSONException
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -21,14 +23,23 @@ abstract class SonicRepository<Service> {
     protected var service: Service? = null
     abstract fun getServiceClass(): Class<Service>
     abstract fun onFailure(t: Throwable?, requestType: Int)
-    abstract fun onInvalidResponse(requestType: Int, res: SonicResponse, result: MutableLiveData<SonicResponse>)
+    abstract fun onInvalidRequest(
+        requestType: Int,
+        res: SonicResponse,
+        result: MutableLiveData<SonicResponse>
+    )
+    abstract fun getErrorResponseKeys(): Array<String>
 
     fun <T : SonicResponse> makeRequest(call: Call<T>?, requestType: Int): LiveData<SonicResponse> {
         val result = MutableLiveData<SonicResponse>()
         if (NetworkUtils.isNetworkConnected()) {
             call?.enqueue(object : Callback<T> {
                 override fun onResponse(call: Call<T>?, response: Response<T>?) {
-                    handleResponse(response, requestType, result)
+                    if (response?.isSuccessful == true) {
+                        handleResponse(response, requestType, result)
+                    } else {
+                        handleRequestFail(response, requestType, result)
+                    }
                 }
 
                 override fun onFailure(call: Call<T>?, t: Throwable?) {
@@ -41,18 +52,40 @@ abstract class SonicRepository<Service> {
         return transformResponse(requestType, result)
     }
 
-    fun <T : SonicResponse> handleResponse(response: Response<T>?, requestType: Int,
-                                          result: MutableLiveData<SonicResponse>) {
+    private fun <T : SonicResponse> handleRequestFail(
+        response: Response<T>?,
+        requestType: Int,
+        result: MutableLiveData<SonicResponse>
+    ) {
+        var errorMessage = ""
+        try {
+            val errorBody = JSONObject(response?.errorBody()?.string() ?: "")
+            for (key in getErrorResponseKeys()){
+                if(errorBody.has(key)){
+                    errorMessage = errorBody.getString(key)
+                }
+            }
+        } catch (e: JSONException) {
+            e.printStackTrace()
+        }
+        val status = response?.code() ?: 404
+        val res = SonicResponse()
+        res.errorMessage = errorMessage
+        res.status = status
+
+        onInvalidRequest(requestType, res, result)
+    }
+
+    fun <T : SonicResponse> handleResponse(
+        response: Response<T>?, requestType: Int,
+        result: MutableLiveData<SonicResponse>
+    ) {
         response?.body()?.let { data ->
             data.status = response.code()
             result.value = data
             return
         }
-        val status = response?.code() ?: 404
-        val res = SonicResponse()
-        res.status = status
-
-        onInvalidResponse(requestType, res, result)
+        handleRequestFail(response, requestType, result)
     }
 
     fun handleFailure(t: Throwable?, requestType: Int, result: MutableLiveData<SonicResponse>) {
@@ -72,7 +105,10 @@ abstract class SonicRepository<Service> {
         return response
     }
 
-    private fun transformResponse(requestType: Int, result: MutableLiveData<SonicResponse>): LiveData<SonicResponse> {
+    private fun transformResponse(
+        requestType: Int,
+        result: MutableLiveData<SonicResponse>
+    ): LiveData<SonicResponse> {
         return Transformations.switchMap(result) {
             val data = MutableLiveData<SonicResponse>()
             data.value = transform(requestType, it)
