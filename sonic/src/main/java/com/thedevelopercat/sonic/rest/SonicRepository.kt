@@ -69,10 +69,10 @@ abstract class SonicRepository<Service> {
             e.printStackTrace()
         }
         val status = response?.code() ?: 404
-        val res = SonicResponse()
-        res.error = if(errorMessage.isEmpty()) InvalidRequestException() else InvalidRequestException(errorMessage)
-        res.errorMessage = errorMessage
-        res.status = status
+        val res = response?.body()
+        res?.error = if(errorMessage.isEmpty()) InvalidRequestException() else InvalidRequestException(errorMessage)
+        res?.errorMessage = errorMessage
+        res?.status = status
         result.value = res
         onInvalidRequest(requestType, result)
     }

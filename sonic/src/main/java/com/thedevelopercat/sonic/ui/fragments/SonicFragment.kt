@@ -30,11 +30,10 @@ abstract class SonicFragment<Binding: ViewDataBinding, ViewModel: SonicViewModel
         savedInstanceState: Bundle?
     ): View? {
         sonicActivity = activity as SonicActivity<*,*>
-        binding = DataBindingUtil.inflate(inflater, getLayout(),container,false)//DataBindingUtil.setContentView(this, getLayout())
+        binding = DataBindingUtil.inflate(inflater, getLayout(),container,false)
         binding?.lifecycleOwner = this
         viewModel = ViewModelProviders.of(this).get(getViewModelClass())
-        root = inflater.inflate(getLayout(), null)
-        return root
+        return binding?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

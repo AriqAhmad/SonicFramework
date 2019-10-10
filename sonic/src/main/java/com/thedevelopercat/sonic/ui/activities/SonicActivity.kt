@@ -154,7 +154,7 @@ abstract class SonicActivity<Binding: ViewDataBinding, ViewModel : SonicViewMode
 
     open fun startNextActivityAndClearTop(
         activityClass: Class<out Activity>,
-        bundle: Bundle?
+        bundle: Bundle? = null
     ) {
         val intent = Intent(this, activityClass)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
