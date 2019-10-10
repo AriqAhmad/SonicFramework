@@ -1,6 +1,6 @@
 package com.thedevelopercat.sonic.rest
 
-class SonicRequestHeaderManager {
+open class SonicRequestHeaderManager {
 
     protected val headers = HashMap<String, String>()
 
