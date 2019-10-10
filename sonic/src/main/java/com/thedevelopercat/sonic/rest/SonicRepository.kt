@@ -2,7 +2,9 @@ package com.thedevelopercat.sonic.rest
 
 import android.app.Application
 import androidx.annotation.RawRes
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException
 import com.thedevelopercat.sonic.exceptions.NoNetworkException
@@ -14,10 +16,10 @@ import java.io.IOException
 import java.io.InputStream
 
 
-abstract class SonicRepository {
+abstract class BaseRepository {
 
-    fun <T : SonicResponse> makeRequest(call: Call<T>, requestType: Int): MutableLiveData<T> {
-        val result = MutableLiveData<T>()
+    fun <T : SonicResponse> makeRequest(call: Call<T>, requestType: Int): LiveData<SonicResponse> {
+        val result = MutableLiveData<SonicResponse>()
         if (NetworkUtils.isNetworkConnected()) {
             call.enqueue(object : Callback<T> {
                 override fun onResponse(call: Call<T>?, response: Response<T>?) {
@@ -25,46 +27,56 @@ abstract class SonicRepository {
                 }
 
                 override fun onFailure(call: Call<T>?, t: Throwable?) {
-                    handleFailure(requestType, result)
+                    handleFailure(t, requestType, result)
                 }
             })
         } else {
-            handleFailure(requestType, result)
+            handleFailure(NoNetworkException(), requestType, result)
         }
-        return result
+        return transformResponse(requestType, result)
     }
 
-    fun <T : SonicResponse> handleResponse(
-        response: Response<T>?, requestType: Int, result: MutableLiveData<T>) {
+    fun <T : SonicResponse> handleResponse(response: Response<T>?, requestType: Int,
+                                          result: MutableLiveData<SonicResponse>) {
         response?.body()?.let { data ->
             data.status = response.code()
-            data.success = true
             result.value = data
             return
         }
-        onRequestFailed(requestType, result, response?.errorBody().toString())
+        val status = response?.code() ?: 404
+        val res = SonicResponse()
+        res.status = status
+
+        onInvalidResponse(requestType, res, result)
     }
 
-    open fun <T : SonicResponse> onRequestFailed(
-        requestType: Int,
-        result: MutableLiveData<T>,
-        errorBody: String?
-    ) {
+    protected abstract fun onInvalidResponse(requestType: Int, res: SonicResponse, result: MutableLiveData<SonicResponse>)
 
-    }
-
-    fun <T : SonicResponse> handleFailure(requestType: Int, result: MutableLiveData<T>) {
+    fun handleFailure(t: Throwable?, requestType: Int, result: MutableLiveData<SonicResponse>) {
         var status = -1
-        val response = SonicResponse()
-
         if (!NetworkUtils.isNetworkConnected()) {
             status = 408
-            response.error = NoNetworkException()
-            response.errorMessage = response.error?.toString()
         }
+        val response = SonicResponse()
         response.status = status
+        response.error = t
+        result.value = response
 
-        onRequestFailed(requestType, result, response.toString())
+        onFailure(t, requestType)
+    }
+
+    abstract fun onFailure(t: Throwable?, requestType: Int)
+
+    protected open fun transform(requestType: Int, response: SonicResponse?): SonicResponse? {
+        return response
+    }
+
+    private fun transformResponse(requestType: Int, result: MutableLiveData<SonicResponse>): LiveData<SonicResponse> {
+        return Transformations.switchMap(result) {
+            val data = MutableLiveData<SonicResponse>()
+            data.value = transform(requestType, it)
+            data
+        }
     }
 
     fun <T : SonicResponse> parseLocalJson(@RawRes id: Int, type: Class<T>): T? {
